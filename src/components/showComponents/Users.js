@@ -1,10 +1,13 @@
 import React from "react";
 import "../styles.css";
-
+import Header from "./Header";
 import { useDispatch, useSelector } from "react-redux";
 import { Delete, Edit, updateButton, Disable } from "../../actions/index";
+import { useNavigate } from "react-router-dom";
+
 const Users = () => {
   const data = useSelector((state) => state.Add);
+  const history = useNavigate();
   const disableButton = useSelector((state) => state.disableButton);
 
   const dispatch = useDispatch();
@@ -19,13 +22,14 @@ const Users = () => {
     dispatch(Edit(idx));
     dispatch(updateButton(true));
     dispatch(Disable(true));
+    history("/update");
   }
 
   function showData() {
     console.log("update ke baad ka data", data);
     return data.map((item, idx) => {
       return (
-        <div className="mb-2 p-4 max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="mb-2 p-4 max-w-xxl bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
           <div className="flow-root">
             <ul
               role="list"
@@ -55,9 +59,9 @@ const Users = () => {
               </li>
             </ul>
           </div>
-          <div className="bg-white p-4">
+          <div className="bg-white p-4 ml-8">
             <button
-              className="inline-flex items-center mr-40 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md"
+              className="inline-flex items-center mr-40 px-4  py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md"
               onClick={() => handleEdit(item)}
               disabled={disableButton}
             >
@@ -78,7 +82,7 @@ const Users = () => {
               &nbsp; Edit
             </button>
             <button
-              className="inline-flex items-center px-4  py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md "
+              className="inline-flex items-center px-4  py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md"
               onClick={() => handleDelete(idx)}
               disabled={disableButton}
             >
@@ -105,11 +109,18 @@ const Users = () => {
   }
 
   return (
-    <div className="grid place-items-center h-screen scroll">
-      {/* //for refernce */}
-      {/* <UserContex.Consumer>{(contex) => showData(contex)}</UserContex.Consumer> */}
-      {showData()}
-    </div>
+    <>
+      <div>
+        <Header />
+      </div>
+      <div className="flex justify-center">
+        <div className="h-screen scroll">
+          {/* //for refernce */}
+          {/* <UserContex.Consumer>{(contex) => showData(contex)}</UserContex.Consumer> */}
+          {showData()}
+        </div>
+      </div>
+    </>
   );
 };
 
