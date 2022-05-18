@@ -16,7 +16,6 @@ const Users = () => {
     // let ans = arr.filter((item) => item.email !== email);
     console.log("delete", id);
     dispatch(Delete(id));
-    // setData({ name: "", email: "", phone: "" });
   }
   function handleEdit(idx) {
     dispatch(Edit(idx));
@@ -40,7 +39,7 @@ const Users = () => {
                   <div className="flex-shrink-0">
                     <img
                       className="w-20 h-20 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                      src="https://www.getillustrations.com/packs/3d-avatar-illustrations/male/_1x/Avatar,%203D%20_%20man,%20male,%20people,%20person,%20broken%20glasses,%20facial%20hair,%20turtleneck,%20glasses_sm.png"
                       alt="Neil"
                     />
                   </div>
@@ -114,11 +113,7 @@ const Users = () => {
         <Header />
       </div>
       <div className="flex justify-center">
-        <div className="h-screen scroll">
-          {/* //for refernce */}
-          {/* <UserContex.Consumer>{(contex) => showData(contex)}</UserContex.Consumer> */}
-          {showData()}
-        </div>
+        <div className="h-screen scroll">{showData()}</div>
       </div>
     </>
   );

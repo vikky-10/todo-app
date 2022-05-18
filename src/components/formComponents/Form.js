@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
   Add,
@@ -14,14 +13,12 @@ import {
 import { useNavigate } from "react-router-dom";
 const Form = () => {
   const [data, setData] = useState({ name: "", email: "", phone: "" });
+  const [isPresent, setIsPresent] = useState(false);
   const history = useNavigate();
   const location = useLocation();
-  const disableButton = useSelector((state) => state.disableButton);
-  // const [isPresent, setIsPresent] = useState();
   const dispatch = useDispatch();
+  const disableButton = useSelector((state) => state.disableButton);
   const arr = useSelector((state) => state.Add);
-  const [isPresent, setIsPresent] = useState(false);
-  // const useRefs = useRef();
   function handleSubmit(event) {
     event.preventDefault();
     const present = arr.some((item) => item.email === data.email);
@@ -33,19 +30,14 @@ const Form = () => {
       }
       setData({ name: "", email: "", phone: "" });
       history("/");
+    } else if (data.phone.length > 10) {
+      console.log("data pppp");
+      setIsPresent(true);
     } else {
       setIsPresent(present);
     }
   }
-  useEffect(() => {
-    window.onbeforeunload = function () {
-      history("/");
-    };
 
-    return () => {
-      window.onbeforeunload = null;
-    };
-  }, []);
   const updateButtons = useSelector((state) => state.updateButton);
   const editData = useSelector((state) => state.editReducer);
 
@@ -53,10 +45,8 @@ const Form = () => {
     editData && setData(editData);
     if (location.pathname == "/add") {
       setData({ name: "", email: "", phone: "" });
-      // useRefs.current.value = "";
     }
   }, [editData]);
-  // console.log(report);
   function handleUpdate(event) {
     event.preventDefault();
 
@@ -67,10 +57,10 @@ const Form = () => {
     history("/");
   }
   function handleChange() {
-    if (updateButtons === false) {
+    if (updateButtons === false && (data.name || data.name || data.email)) {
       confirmAlert({
         title: "Confirm to Back",
-        message: "Are you sure to do this.",
+        message: "Beacuse your Data is not save yet!!.",
         buttons: [
           {
             label: "Yes",
@@ -89,20 +79,13 @@ const Form = () => {
           },
         ],
       });
-      // dispatch(Disable(false));
-      // history("/");
+    } else {
+      history("/");
     }
   }
-  // function remove() {
-  //   dispatch(Update(editData));
-  //   dispatch(updateButton(false));
-  //   dispatch(Button(false));
-  //   // setData({ name: "", email: "", phone: "" });
-  // }
-  function backButton(event) {
-    // setData({ name: "", email: "", phone: "" });
-    event.preventDefault();
 
+  function backButton(event) {
+    event.preventDefault();
     confirmAlert({
       title: "Confirm to Back",
       message: "Are you sure to do this.",
@@ -181,11 +164,7 @@ const Form = () => {
             className=" relative p-8 mt-6 mb-0 space-y-4 rounded-lg shadow-2xl"
           >
             {updateButtons && (
-              <button
-                onClick={backButton}
-                type="button"
-                // class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center  px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
+              <button onClick={backButton} type="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-8 w-8 "
@@ -210,27 +189,8 @@ const Form = () => {
                   </div>
                 </span>
               </button>
-              // -----
-              // <button
-              //   onClick={backButton}
-              //   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-6 w-10 h-8  rounded-full"
-              // >
-
-              // </button>
             )}
-            {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 ml-80"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            onClick={remove}
-          >
-            <path
-              fill-rule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clip-rule="evenodd"
-            />
-          </svg> */}
+
             <div>
               <label htmlFor="name" className="text-sm font-medium mr-20 pr-80">
                 Name
@@ -297,14 +257,12 @@ const Form = () => {
               <button
                 type="submit"
                 className="block w-full  text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-m px-5 py-2.5 text-center mr-2 mb-2"
-                // onClick={handleUpdate}
               >
                 Update
               </button>
             ) : (
               <button
                 type="submit"
-                // onClick={handleSubmit}
                 className="block w-full  text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-m px-5 py-2.5 text-center mr-2 mb-2"
               >
                 Submit
